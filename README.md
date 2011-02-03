@@ -13,19 +13,17 @@ acquired through a mix of `link(2)` and `rename(2)` operations.
 
 ## Example
 
-```js
-var FSDocs = require('fsdocs').FSDocs
-var docs = new FSDocs('./mydocs')
+    var FSDocs = require('fsdocs').FSDocs
+    var docs = new FSDocs('./mydocs')
 
-docs.put('doc1', {title:"Hello"}, function(err, ok) {
-  if (err) throw err
-  console.log(ok? 'stored ok' : 'conflict: version already exist')
-  docs.get('doc1', function(err, document) {
-    if (err) throw err
-    console.log(document)
-  })
-})
-```
+    docs.put('doc1', {title:"Hello"}, function(err, ok) {
+      if (err) throw err
+      console.log(ok? 'stored ok' : 'conflict: version already exist')
+      docs.get('doc1', function(err, document) {
+        if (err) throw err
+        console.log(document)
+      })
+    })
 
 ## API
 
