@@ -29,30 +29,30 @@ acquired through a mix of `link(2)` and `rename(2)` operations.
 
 ### `new FSDocs(location) -> [object FSDocs]`
 
-A document store based in directory at |location|
+A document store based in directory at `location`
 
-#### `docs.get(key, [version], [callback(err, document)])`
+### `docs.get(key, [version], [callback(err, document)])`
 
-Retrieve a document. If |version| is omitted or less than 1, the most
+Retrieve a document. If `version` is omitted or less than 1, the most
 recent version of the document is returned.
 
-#### `docs.getSync(key, [version]) -> document`
+### `docs.getSync(key, [version]) -> document`
 
-Synchronous version of |docs.get|
+Synchronous version of `docs.get`
 
-#### `docs.put(key, document, [callback(err, storedOk)])`
+### `docs.put(key, document, [callback(err, storedOk)])`
 
-Create or update a document. If |document| does not contain a |_version|
-member or its |_version| member is less than 1, the document is
+Create or update a document. If `document` does not contain a `_version`
+member or its `_version` member is less than 1, the document is
 considered as "new" and thus if there's already an existing version an
 error will be returned (since the document is effectively version 1). If
-there's a conflict when writing the new version, |storedOk| will be a
+there's a conflict when writing the new version, `storedOk` will be a
 false value. In this case it's up to the client to proceed (e.g. merge,
-discard, retry, etc). |document| must be an object.
+discard, retry, etc). `document` must be an object.
 
-#### `docs.putSync(key, document) -> storedOk`
+### `docs.putSync(key, document) -> storedOk`
 
-Synchronous version of |docs.put|
+Synchronous version of `docs.put`
 
 
 ## Implementation
