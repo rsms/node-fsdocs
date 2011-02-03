@@ -27,20 +27,20 @@ acquired through a mix of `link(2)` and `rename(2)` operations.
 
 ## API
 
-### `new FSDocs(location) -> [object FSDocs]`
+### new FSDocs(location) -> [object FSDocs]
 
 A document store based in directory at `location`
 
-### `docs.get(key, [version], [callback(err, document)])`
+#### docs.get(key, [version], [callback(err, document)])
 
 Retrieve a document. If `version` is omitted or less than 1, the most
 recent version of the document is returned.
 
-### `docs.getSync(key, [version]) -> document`
+#### docs.getSync(key, [version]) -> document
 
 Synchronous version of `docs.get`
 
-### `docs.put(key, document, [callback(err, storedOk)])`
+#### docs.put(key, document, [callback(err, storedOk)])
 
 Create or update a document. If `document` does not contain a `_version`
 member or its `_version` member is less than 1, the document is
@@ -50,7 +50,7 @@ there's a conflict when writing the new version, `storedOk` will be a
 false value. In this case it's up to the client to proceed (e.g. merge,
 discard, retry, etc). `document` must be an object.
 
-### `docs.putSync(key, document) -> storedOk`
+#### docs.putSync(key, document) -> storedOk
 
 Synchronous version of `docs.put`
 
