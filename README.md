@@ -18,12 +18,17 @@ acquired through a mix of `link(2)` and `rename(2)` operations.
 
     docs.put('doc1', {title:"Hello"}, function(err, ok) {
       if (err) throw err
-      console.log(ok? 'stored ok' : 'conflict: version already exist')
+      console.log(ok? 'stored ok' : 'conflict')
       docs.get('doc1', function(err, document) {
         if (err) throw err
         console.log(document)
       })
     })
+
+Output:
+
+    stored ok
+    { title: 'Hello', _version: 1 }
 
 ## API
 

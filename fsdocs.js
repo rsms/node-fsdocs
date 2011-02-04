@@ -139,11 +139,12 @@ FSDocs.prototype = {
               if (e) {
                 if (typeof e === 'object' && e.errno === 17) {
                   // someone else wrote this version before we did
-                  fs.unlink(tempname, callback);
+                  fs.unlink(tempname, function(e) {
+                    fs.unlink(lockfile, function(){ callback(e) });
+                  });
                 } else {
-                  callback(e);
+                  fs.unlink(lockfile, function(){ callback(e) });
                 }
-                fs.unlink(lockfile, callback);
                 return;
               }
               

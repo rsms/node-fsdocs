@@ -6,13 +6,13 @@ console.log(docs.putSync('doc1', {title:'internet', age:35.5}))
 console.log(docs.getSync('doc1'))
 
 // asynchronous API
-docs.put('doc2', {title:'internets', age:35.5}, function(err, ok) {
-  if (err) return console.error('error: '+(err.stack || err));
-  console.log('stored? '+(ok ? 'true':'false'))
+docs.put('doc2', {title:"Hello"}, function(err, ok) {
+  if (err) throw err
+  console.log(ok? 'stored ok' : 'conflict')
   docs.get('doc2', function(err, document) {
-    if (err) throw err;
-    console.log(document);
-  });
+    if (err) throw err
+    console.log(document)
+  })
 })
 
 /*
