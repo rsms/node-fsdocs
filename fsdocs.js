@@ -29,7 +29,7 @@ function FSDocs(location) {
   // FIXME: move into an open method or something like that
   try {
     fs.mkdirSync(this.location, 0700);
-  } catch (e) { if (typeof e !== 'object' || e.errno !== 17) throw e; }
+  } catch (e) { if (typeof e !== 'object' || e.code !== "EEXIST") throw e; }
 }
 
 FSDocs.prototype = {
