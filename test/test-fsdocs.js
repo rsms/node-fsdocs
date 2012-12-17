@@ -38,8 +38,8 @@ describe('FSDocs', function() {
     var docs = new fsdocs.FSDocs(datadir + '/missing');
     
     docs.get('nonexistent', function(err, document) {
-      assert(err);
-      assert.equal('ENOENT', err.code);
+      assert(err === null);
+      assert(document === null);
     });
   });
   
@@ -62,9 +62,8 @@ describe('FSDocs', function() {
     var docs = new fsdocs.FSDocs(datadir + '/get-put-sync');
     var ok, document;
     
-    assert.throws(function() {
-      docs.getSync('test-doc');
-    }, Error.ENOENT);
+    document = docs.getSync('test-doc');
+    assert(document === null);
     
     ok = docs.putSync('test-doc', {hello: 'world'});
     assert(ok);
