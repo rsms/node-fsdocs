@@ -29,7 +29,7 @@ function FSDocs(location) {
   // FIXME: move into an open method or something like that
   try {
     fs.mkdirSync(this.location, 0700);
-  } catch (e) { if (typeof e !== 'object' || e.errno !== 17) throw e; }
+  } catch (e) { if (typeof e !== 'object' || e.code !== 'EEXIST') throw e; }
 }
 
 FSDocs.prototype = {
@@ -50,7 +50,7 @@ FSDocs.prototype = {
     while ((p = dirname.indexOf('/', ++p)) !== -1) {
       try {
         fs.mkdirSync(this.location+'/'+dirname.substr(0, p), mode);
-      } catch (e) { if (typeof e !== 'object' || e.errno !== 17) throw e; }
+      } catch (e) { if (typeof e !== 'object' || e.code !== 'EEXIST') throw e; }
     }
   },
   
@@ -61,7 +61,7 @@ FSDocs.prototype = {
       p = dirname.indexOf('/', ++p);
       if (p === -1) return callback();
       fs.mkdir(location+'/'+dirname.substr(0, p), mode, function (err) {
-        if (err && (typeof err !== 'object' || err.errno !== 17)) {
+        if (err && (typeof err !== 'object' || err.code !== 'EEXIST')) {
           callback(err);
         } else {
           next();
@@ -77,7 +77,7 @@ FSDocs.prototype = {
                    ((version && version > 0) ? version : 'current')+'.json';
     fs.readFile(filename, 'utf8', function(err, data) {
       if (err) {
-        if (typeof err === 'object' && (err.errno === 9 || err.errno === 2))
+        if (typeof err === 'object' && (err.code === 'EBADF' || err.code === 'ENOENT'))
           err = null;
         return callback && callback(err, null);
       }
@@ -92,7 +92,7 @@ FSDocs.prototype = {
     try {
       return JSON.parse(fs.readFileSync(filename));
     } catch (e) {
-      if (typeof e === 'object' && (e.errno === 9 || e.errno === 2))
+      if (typeof e === 'object' && (e.code === 'EBADF' || e.code === 'ENOENT'))
         return null;
       throw e;
     }
@@ -128,7 +128,7 @@ FSDocs.prototype = {
 
           // lock the entry
           fs.link(tempname, lockfile, function(e) {
-            if (e && typeof e === 'object' && e.errno === 17) {
+            if (e && typeof e === 'object' && e.code === 'EEXIST') {
               // someone else already has the lock (we where too slow)
               return fs.unlink(tempname, callback);
             } else if (e) { return callback(e); }
@@ -137,7 +137,7 @@ FSDocs.prototype = {
             fs.link(tempname, versionname, function(e) {
               
               if (e) {
-                if (typeof e === 'object' && e.errno === 17) {
+                if (typeof e === 'object' && e.code === 'EEXIST') {
                   // someone else wrote this version before we did
                   fs.unlink(tempname, function(e) {
                     fs.unlink(lockfile, function(){ callback(e) });
@@ -192,7 +192,7 @@ FSDocs.prototype = {
           return true;
         } catch (e) {
           // someone else wrote this version before we did
-          if (typeof e === 'object' && e.errno === 17) {
+          if (typeof e === 'object' && e.code === 'EEXIST') {
             fs.unlinkSync(tempname);
             return false;
           }
@@ -203,7 +203,7 @@ FSDocs.prototype = {
       } catch (e) {
         fs.unlinkSync(tempname);
         // someone else already has the lock (we where too slow)
-        if (typeof e === 'object' && e.errno === 17)
+        if (typeof e === 'object' && e.code === 'EEXIST')
           return false;
         throw e;
       }
