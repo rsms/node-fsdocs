@@ -35,7 +35,7 @@ describe('FSDocs', function() {
   before(clear);
   
   it('Should report nonexisting documents as missing', function() {
-    var docs = new fsdocs.FSDocs(datadir);
+    var docs = new fsdocs.FSDocs(datadir + '/missing');
     
     docs.get('nonexistent', function(err, document) {
       assert(err);
@@ -44,7 +44,7 @@ describe('FSDocs', function() {
   });
   
   it('Should be able to put and get documents asynchronously', function() {
-    var docs = new fsdocs.FSDocs(datadir);
+    var docs = new fsdocs.FSDocs(datadir + '/get-put-async');
     
     docs.put('test-doc', {hello: 'world'}, function(err, ok) {
       assert(!err);
@@ -59,7 +59,7 @@ describe('FSDocs', function() {
   });
   
   it('Should be able to put and get documents synchronously', function() {
-    var docs = new fsdocs.FSDocs(datadir);
+    var docs = new fsdocs.FSDocs(datadir + '/get-put-sync');
     var ok, document;
     
     assert.throws(function() {
@@ -75,7 +75,7 @@ describe('FSDocs', function() {
   });
   
   it('Should refuse to write the same version twice', function() {
-    var docs = new fsdocs.FSDocs(datadir);
+    var docs = new fsdocs.FSDocs(datadir + '/conflict-detect');
     
     docs.put('test-doc', {hello: 'world'}, function(err, ok) {
       assert(!err);
