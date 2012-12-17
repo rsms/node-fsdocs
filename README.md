@@ -41,9 +41,16 @@ A document store based in directory at `location`
 Retrieve a document. If `version` is omitted or less than 1, the most
 recent version of the document is returned.
 
+If the document does not exist, returns null for both document and error.
+If there is another reason why the document cannot be retrieved,
+such as permissions denying access, that error is returned.
+
 #### docs.getSync(key, [version]) -> document
 
-Synchronous version of `docs.get`
+Synchronous version of `docs.get`.
+
+If the document does not exist, returns null. Other errors are thrown
+as exceptions.
 
 #### docs.put(key, document, [callback(err, storedOk)])
 
