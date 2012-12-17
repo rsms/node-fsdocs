@@ -77,7 +77,7 @@ FSDocs.prototype = {
                    ((version && version > 0) ? version : 'current')+'.json';
     fs.readFile(filename, 'utf8', function(err, data) {
       if (err) {
-        if (typeof err === 'object' && (err.errno === 9 || err.errno === 2))
+        if (typeof err === 'object' && (err.code === 'EBADF' || err.code === 'ENOENT'))
           err = null;
         return callback && callback(err, null);
       }
@@ -92,7 +92,7 @@ FSDocs.prototype = {
     try {
       return JSON.parse(fs.readFileSync(filename));
     } catch (e) {
-      if (typeof e === 'object' && (e.errno === 9 || e.errno === 2))
+      if (typeof e === 'object' && (e.code === 'EBADF' || e.code === 'ENOENT'))
         return null;
       throw e;
     }
