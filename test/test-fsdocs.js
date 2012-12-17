@@ -1,3 +1,4 @@
+var fs = require('fs');
 var assert = require('assert');
 var child_process = require('child_process');
 var fsdocs = require('../fsdocs');
@@ -5,17 +6,30 @@ var fsdocs = require('../fsdocs');
 var datadir = __dirname + '/data';
 
 function clear(done) {
-  var p = child_process.spawn('rm', ['-rf', datadir]);
-  p.on('exit', function(code) {
-    var error;
-    if (code == 0) {
-      error = null;
+  fs.exists(datadir, function(yes) {
+    if (yes) {
+      var p = child_process.spawn('rm', ['-rf', datadir]);
+      p.on('exit', function(code) {
+        var error;
+        if (code == 0) {
+          create(done);
+        } else {
+          error = new Error('Could not remove data directory: rm exited with code ' + code);
+          done(error);
+        }
+      });
     } else {
-      error = new Error('Could not remove data directory: rm exited with code ' + code);
+      create(done);
     }
-    done(error);
   });
 }
+
+function create(done) {
+  var mode = 0777 - process.umask();
+  fs.mkdir(datadir, mode, done);
+}
+
+// Important: each test should use its own data directory
 
 describe('FSDocs', function() {
   before(clear);
