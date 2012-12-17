@@ -17,7 +17,7 @@ function clear(done) {
   });
 }
 
-describe('Basics', function() {
+describe('FSDocs', function() {
   before(clear);
   
   it('Should report nonexisting documents as missing', function() {
@@ -58,5 +58,18 @@ describe('Basics', function() {
     document = docs.getSync('test-doc');
     assert(document);
     assert.equal('world', document.hello);
+  });
+  
+  it('Should refuse to write the same version twice', function() {
+    var docs = new fsdocs.FSDocs(datadir);
+    
+    docs.put('test-doc', {hello: 'world'}, function(err, ok) {
+      assert(!err);
+      assert(ok);
+      
+      docs.put('test-doc', {hello: 'world'}, function(err, ok) {
+        assert(err);
+      });
+    });
   });
 });
